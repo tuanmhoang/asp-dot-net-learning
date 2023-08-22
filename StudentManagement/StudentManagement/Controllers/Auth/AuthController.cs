@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using StudentManagement.Models;
 using StudentManagement.Models.Requests;
+using System.Collections;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -14,7 +15,7 @@ namespace StudentManagement.Controllers.Auth
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public static User user = new User();
+        public static Models.Entities.User user = new Models.Entities.User();
         private readonly IConfiguration configuration;
 
         public AuthController(IConfiguration configuration)
@@ -23,18 +24,27 @@ namespace StudentManagement.Controllers.Auth
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(RegisterDto request)
+        public async Task<ActionResult<Models.Entities.User>> Register(RegisterDto request)
         {
+            // check username regex
+
+            // check password regex
+
+            // create password
+
+            // save to db
+
             CreatePasswordHash(request.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
             user.Username = request.Username;
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+
+            user.Password = System.Text.Encoding.UTF8.GetString(passwordHash); 
+            user.Password = System.Text.Encoding.UTF8.GetString(passwordSalt);
 
             return Ok(user);
         }
 
-        [HttpPost("login")]
+/*        [HttpPost("login")]
         public async Task<ActionResult<string>> Login(LoginDto request)
         {
             if (user.Username != request.Username)
@@ -50,9 +60,9 @@ namespace StudentManagement.Controllers.Auth
             string token = CreateToken(user);
 
             return Ok(token);
-        }
+        }*/
 
-        private string CreateToken(User user)
+ /*       private string CreateToken(User user)
         {
             List<Claim> claims = new List<Claim>
             {
@@ -72,7 +82,7 @@ namespace StudentManagement.Controllers.Auth
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
 
             return jwt;
-        }
+        }*/
 
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
