@@ -1,10 +1,11 @@
-﻿using Azure.Core;
+﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentManagement.Models.Dtos;
 using StudentManagement.Models.Entities;
+using StudentManagement.Models.Requests;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Collections.Generic;
+
 
 namespace StudentManagement.Controllers.Students
 {
@@ -40,27 +41,62 @@ namespace StudentManagement.Controllers.Students
             return Ok(ConvertEntityToDto(foundStudent));
         }
 
-        [SwaggerOperation(Summary = "Update a student")]
-        [HttpPost]
-        public async Task<IActionResult> UpdateStudent(UserDto userDto)
+        [SwaggerOperation(Summary = "Update a student info")]
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateStudent(int id, [FromBody] JsonPatchDocument<User> updateRequest)
         {
-            if(userDto == null)
+            if(updateRequest == null)
             {
-                return BadRequest("Invalid input.");
+                return BadRequest("Request is invalid.");
             }
-            var foundStudent = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userDto.Id);
-            if(foundStudent == null)
+
+            var studentToUpdate = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if(studentToUpdate == null)
             {
                 return NotFound("Student not found.");
             }
 
-            foundStudent.Firstname = userDto.Firstname;
-            foundStudent.Lastname = userDto.Lastname;
-            foundStudent.Photo = userDto.Photo;
+            updateRequest.ApplyTo(studentToUpdate, ModelState);
 
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            dbContext.Users.Update(studentToUpdate);
             await dbContext.SaveChangesAsync();
 
-            UserDto updatedStudentDto = ConvertEntityToDto(foundStudent);
+            UserDto updatedStudentDto = ConvertEntityToDto(studentToUpdate);
+
+            return Ok(updatedStudentDto);
+        }
+
+        [SwaggerOperation(Summary = "Update a student photo")]
+        [HttpPut("{id}/photo")]
+        public async Task<IActionResult> UpdateStudentPhoto(int id, [FromForm] UpdateStudentPhotoRequest request)
+        {
+            if (request == null)
+            {
+                return BadRequest("Invalid input.");
+            }
+
+            var updatedStudent = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
+            if (updatedStudent == null)
+            {
+                return NotFound("Student not found.");
+            }
+
+            using (var memoryStream = new MemoryStream())
+            {
+                await request.Photo.CopyToAsync(memoryStream);
+                var photoData = memoryStream.ToArray();
+                updatedStudent.Photo = photoData;
+            }
+
+            dbContext.Users.Update(updatedStudent);
+            await dbContext.SaveChangesAsync();
+
+            UserDto updatedStudentDto = ConvertEntityToDto(updatedStudent);
 
             return Ok(updatedStudentDto);
         }

@@ -1,4 +1,5 @@
 using Microsoft.OpenApi.Models;
+using StudentManagement.Configs;
 using StudentManagement.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,7 +18,14 @@ builder.Services.AddCors(options =>
                       });
 });
 
-builder.Services.AddControllers();
+/*builder.Services.AddControllers(options =>
+{
+    options.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
+});*/
+
+builder.Services.AddControllers()
+    .AddNewtonsoftJson();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

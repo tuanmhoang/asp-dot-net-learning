@@ -86,3 +86,7 @@ C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentM
 C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\obj\Release\net6.0\StudentManagement.genruntimeconfig.cache
 C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\obj\Release\net6.0\ref\StudentManagement.dll
 C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\bin\Release\net6.0\Swashbuckle.AspNetCore.Annotations.dll
+C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\bin\Release\net6.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\bin\Release\net6.0\Newtonsoft.Json.dll
+C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\bin\Release\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\bin\Release\net6.0\Newtonsoft.Json.Bson.dll
