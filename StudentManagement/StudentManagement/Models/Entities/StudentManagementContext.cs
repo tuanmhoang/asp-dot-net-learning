@@ -27,7 +27,7 @@ public partial class StudentManagementContext : DbContext
     {
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__ROLE__3213E83FF00559A3");
+            entity.HasKey(e => e.Id).HasName("PK__ROLE__3213E83FB178C57B");
 
             entity.ToTable("ROLE");
 
@@ -40,7 +40,7 @@ public partial class StudentManagementContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__USER__3213E83F1EB78A21");
+            entity.HasKey(e => e.Id).HasName("PK__USER__3213E83FA3647AD7");
 
             entity.ToTable("USER");
 
@@ -58,8 +58,7 @@ public partial class StudentManagementContext : DbContext
                 .IsUnicode(false)
                 .HasColumnName("password");
             entity.Property(e => e.PasswordSalt)
-                .HasMaxLength(255)
-                .IsUnicode(false)
+                .HasMaxLength(16)
                 .HasColumnName("password_salt");
             entity.Property(e => e.Photo).HasColumnName("photo");
             entity.Property(e => e.Roleid).HasColumnName("roleid");
@@ -70,7 +69,7 @@ public partial class StudentManagementContext : DbContext
 
             entity.HasOne(d => d.Role).WithMany(p => p.Users)
                 .HasForeignKey(d => d.Roleid)
-                .HasConstraintName("FK__USER__roleid__2D27B809");
+                .HasConstraintName("FK__USER__roleid__398D8EEE");
         });
 
         OnModelCreatingPartial(modelBuilder);

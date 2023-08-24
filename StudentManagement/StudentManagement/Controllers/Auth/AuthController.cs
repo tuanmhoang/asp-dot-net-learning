@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using StudentManagement.Helpers;
 using StudentManagement.Models.Entities;
 using StudentManagement.Models.Requests;
 using Swashbuckle.AspNetCore.Annotations;
@@ -8,6 +9,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace StudentManagement.Controllers.Auth
 {
@@ -16,7 +18,6 @@ namespace StudentManagement.Controllers.Auth
     [EnableCors]
     public class AuthController : ControllerBase
     {
-        public static User user = new User();
         private readonly IConfiguration configuration;
         private readonly StudentManagementContext dbContext;
 
@@ -31,18 +32,30 @@ namespace StudentManagement.Controllers.Auth
         public async Task<ActionResult<User>> Register(RegisterDto request)
         {
             // check username regex
+            string pattern = @"\w{4}";
+            bool isMatch = Regex.IsMatch(request.Username, pattern);
+            if (!isMatch)
+            {
+                return BadRequest("Username can only have character and number, at least 4 characters length");
+            }
 
             // check password regex
+
+            // create salt
+            PasswordHelper passwordHelper = new PasswordHelper();
+            int saltSize = 16; 
+            byte[] salt = passwordHelper.GenerateSalt(saltSize);
 
             // create password
             CreatePasswordHash(
                 request.Password,
-                out byte[] passwordHash,
-                out byte[] passwordSalt);
+                out byte[] passwordHash);
 
+            // create user
+            User user = new User();
             user.Username = request.Username;
             user.Password = Encoding.UTF8.GetString(passwordHash); 
-            user.PasswordSalt = Encoding.UTF8.GetString(passwordSalt);
+            user.PasswordSalt = salt;
 
             // save to db
             await dbContext.Users.AddAsync(user);
@@ -62,19 +75,19 @@ namespace StudentManagement.Controllers.Auth
             }
 
             var pwd = Encoding.UTF8.GetBytes(foundUser.Password);
-            var slt = Encoding.UTF8.GetBytes(foundUser.PasswordSalt);
+            var slt = foundUser.PasswordSalt;
 
             if (!VerifyPasswordHash(
                     request.Password,
                     Encoding.UTF8.GetBytes(foundUser.Password),
-                    Encoding.UTF8.GetBytes(foundUser.PasswordSalt)
+                    foundUser.PasswordSalt
                     )
                 )
             {
                 return BadRequest("Wrong password.");
             }
 
-            string token = CreateToken(user);
+            string token = CreateToken(foundUser);
 
             return Ok(token);
         }
@@ -86,7 +99,7 @@ namespace StudentManagement.Controllers.Auth
                 new Claim(ClaimTypes.Name, user.Username)
             };
 
-            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
                 configuration.GetSection("AppSettings:Token").Value));
 
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
@@ -101,12 +114,11 @@ namespace StudentManagement.Controllers.Auth
             return jwt;
         }
 
-        private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
+        private void CreatePasswordHash(string password, out byte[] passwordHash)
         {
             using (var hmac = new HMACSHA512())
             {
-                passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
 
         }
