@@ -71,8 +71,36 @@ Open Package Manager Console and use `use Scaffold-DbContext` to generate models
 Scaffold-DbContext -Connection "Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=StudentManagement;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models\Entities -force
 ```
 
+Add to `Program.cs`
+
+```
+builder.Services.AddDbContext<StudentManagementContext>();
+```
+
 ---
-## 3. Notes
+## 3. How to add more details on Swagger
+
+https://stackoverflow.com/questions/52883466/how-to-add-method-description-in-swagger-ui-in-webapi-application
+
+> For ASP.Net Core projects:
+> 
+> install nuget package Swashbuckle.AspNetCore.Annotations
+> 
+> Use SwaggerOperation attribute for a methods like [SwaggerOperation(Summary = "Write your summary here")]
+> 
+> Enable annotations in Startup method ConfigureServices like the following:
+> 
+> services.AddSwaggerGen(c =>
+> {
+>     c.EnableAnnotations();
+>     c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+> });
+> To exclude public method from appearing in swagger ui use attribute [ApiExplorerSettings(IgnoreApi = true)]. It is useful cause these methods can break swagger for some reason.
+> 
+> Launch project, go to localhost:[port number]/swagger and enjoy.
+
+---
+## 99. Notes
 
 https://stackoverflow.com/questions/5613898/storing-images-in-sql-server
 
@@ -91,3 +119,25 @@ The following file(s) already exist in directory 'C:\working\2.Projects\7.siteCo
 To fix add `-force`
 
 Reference: https://stackoverflow.com/questions/41233300/update-entity-class-in-asp-net-core-entity-framework
+
+---
+
+`cors` problem
+
+To fix add to `Program.cs`
+
+```
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: MyAllowSpecificOrigins,
+                      policy =>
+                      {
+                          policy.WithOrigins("https://localhost:7292",
+                                              "https://localhost:7292/swagger/index.html");
+                      });
+});
+
+app.UseCors(MyAllowSpecificOrigins);
+```

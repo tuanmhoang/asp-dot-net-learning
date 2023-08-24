@@ -7,3 +7,7 @@ APIs for managing students
 - update: to update a user
 - student/{id}: view details of user id
 - students: list all student
+
+Role:
+- teacher: list all students
+- student: list all students in his class 
