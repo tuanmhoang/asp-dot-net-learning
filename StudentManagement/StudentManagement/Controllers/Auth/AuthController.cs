@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using StudentManagement.Helpers;
 using StudentManagement.Models.Entities;
 using StudentManagement.Models.Requests;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -41,20 +43,14 @@ namespace StudentManagement.Controllers.Auth
 
             // check password regex
 
-            // create salt
+            // create salt and password
             PasswordHelper passwordHelper = new PasswordHelper();
-            int saltSize = 16; 
-            byte[] salt = passwordHelper.GenerateSalt(saltSize);
-
-            // create password
-            CreatePasswordHash(
-                request.Password,
-                out byte[] passwordHash);
+            var (salt, hashedPassword) = passwordHelper.GenerateSaltAndHash(request.Password);
 
             // create user
             User user = new User();
             user.Username = request.Username;
-            user.Password = Encoding.UTF8.GetString(passwordHash); 
+            user.Password = hashedPassword; 
             user.PasswordSalt = salt;
 
             // save to db
@@ -68,7 +64,7 @@ namespace StudentManagement.Controllers.Auth
         [HttpPost("login")]
         public async Task<ActionResult<string>> Login(LoginDto request)
         {
-            var foundUser = dbContext.Users.FirstOrDefault(u => u.Username == request.Username);
+            var foundUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
             if (foundUser == null)
             {
                 return BadRequest("User not found.");
@@ -77,12 +73,13 @@ namespace StudentManagement.Controllers.Auth
             var pwd = Encoding.UTF8.GetBytes(foundUser.Password);
             var slt = foundUser.PasswordSalt;
 
-            if (!VerifyPasswordHash(
-                    request.Password,
-                    Encoding.UTF8.GetBytes(foundUser.Password),
-                    foundUser.PasswordSalt
-                    )
-                )
+            //
+            PasswordHelper passwordHelper = new PasswordHelper();
+            bool isPasswordValid = passwordHelper.ValidatePassword(request.Password,
+                foundUser.Password,
+                foundUser.PasswordSalt);
+
+            if (!isPasswordValid)
             {
                 return BadRequest("Wrong password.");
             }
@@ -114,13 +111,13 @@ namespace StudentManagement.Controllers.Auth
             return jwt;
         }
 
-        private void CreatePasswordHash(string password, out byte[] passwordHash)
+        private string CreatePasswordHash(string password)
         {
             using (var hmac = new HMACSHA512())
             {
-                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                byte[] passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+                return Encoding.UTF8.GetString(passwordHash, 0, passwordHash.Length);
             }
-
         }
 
         private bool VerifyPasswordHash(string password, byte[] passwordHash, byte[] passwordSalt)
