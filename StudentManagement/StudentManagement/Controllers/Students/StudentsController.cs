@@ -27,7 +27,7 @@ namespace StudentManagement.Controllers.Students
 
         [SwaggerOperation(Summary = "Get all students")]
         [HttpGet]
-        [Authorize]
+
         public async Task<ActionResult<UserDto>> GetStudents()
         {
             var userEntities = await dbContext.Users.ToListAsync();
@@ -37,7 +37,7 @@ namespace StudentManagement.Controllers.Students
 
         [SwaggerOperation(Summary = "Find a specific student by ID")]
         [HttpGet("{id}")]
-        [Authorize]
+ 
         public async Task<ActionResult<UserDto>> FindStudentById(int id)
         {
             var foundStudent = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
@@ -50,7 +50,7 @@ namespace StudentManagement.Controllers.Students
 
         [SwaggerOperation(Summary = "Update a student info")]
         [HttpPatch("{id}")]
-        [Authorize]
+    
         public async Task<IActionResult> UpdateStudent(int id, [FromBody] JsonPatchDocument<User> updateRequest)
         {
             if(updateRequest == null)
@@ -81,7 +81,7 @@ namespace StudentManagement.Controllers.Students
 
         [SwaggerOperation(Summary = "Update a student photo")]
         [HttpPut("{id}/photo")]
-        [Authorize]
+
         public async Task<IActionResult> UpdateStudentPhoto(int id, [FromForm] UpdateStudentPhotoRequest request)
         {
             if (request == null)
