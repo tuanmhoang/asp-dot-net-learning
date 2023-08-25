@@ -100,6 +100,29 @@ https://stackoverflow.com/questions/52883466/how-to-add-method-description-in-sw
 > Launch project, go to localhost:[port number]/swagger and enjoy.
 
 ---
+# 4. Containerize using Docker
+
+Reference:
+
+- https://www.twilio.com/blog/containerize-your-aspdotnet-core-application-and-sql-server-with-docker
+
+Define in `appsettings.json`
+
+```
+  "ConnectionStrings": {
+    "StudentsDb": "Server=sql_server2022;Database=StudentsDb;User Id=SA;Password=A&VeryComplex123Password;MultipleActiveResultSets=true"
+  },
+```
+
+Define in `Program.cs`
+
+```
+builder.Services.AddDbContext<StudentManagementContext>(options =>  options.UseSqlServer(builder.Configuration.GetConnectionString("StudentsDb")));
+
+```
+
+
+---
 ## 99. Notes
 
 https://stackoverflow.com/questions/5613898/storing-images-in-sql-server

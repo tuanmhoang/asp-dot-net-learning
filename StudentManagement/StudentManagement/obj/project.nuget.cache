@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "GEK9JEE5ctANXdZg7AEc8vCdeEycQ4OsB39qGKF/EOL8aSEUCu5PxVr4hrQ59OOuO/ZwzNnRwcG5tEzKFLqsjA==",
+  "dgSpecHash": "BfaXQA1kKjfygKO5wtEVfU8vBQRFwuBGT9DHvq9WMk6VVmnqTTtIIF1EcspUP4yeTSQ7GAhyjDhiQB/2niKEGQ==",
   "success": true,
   "projectFilePath": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\StudentManagement.csproj",
   "expectedPackageFiles": [
@@ -49,6 +49,8 @@
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\newtonsoft.json.bson\\1.0.2\\newtonsoft.json.bson.1.0.2.nupkg.sha512",
+    "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\npgsql\\6.0.8\\npgsql.6.0.8.nupkg.sha512",
+    "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\6.0.8\\npgsql.entityframeworkcore.postgresql.6.0.8.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\swashbuckle.aspnetcore\\6.5.0\\swashbuckle.aspnetcore.6.5.0.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\swashbuckle.aspnetcore.annotations\\6.5.0\\swashbuckle.aspnetcore.annotations.6.5.0.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\6.5.0\\swashbuckle.aspnetcore.swagger.6.5.0.nupkg.sha512",
