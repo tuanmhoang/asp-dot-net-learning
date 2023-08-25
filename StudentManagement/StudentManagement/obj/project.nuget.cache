@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "QVdRtqBR8bA9/nIZIOGeQqCA/xNooZfhfGqs3tWUj9BIaD3Qqeof03qnV3Nnl1ZW0WrGNb3ngoQq43HAN1cEAQ==",
+  "dgSpecHash": "GEK9JEE5ctANXdZg7AEc8vCdeEycQ4OsB39qGKF/EOL8aSEUCu5PxVr4hrQ59OOuO/ZwzNnRwcG5tEzKFLqsjA==",
   "success": true,
   "projectFilePath": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\StudentManagement.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\6.0.12\\microsoft.aspnetcore.authentication.jwtbearer.6.0.12.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\7.0.10\\microsoft.aspnetcore.jsonpatch.7.0.10.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\6.0.12\\microsoft.aspnetcore.mvc.newtonsoftjson.6.0.12.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",

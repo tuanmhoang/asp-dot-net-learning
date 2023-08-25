@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using StudentManagement.Converter;
 using StudentManagement.Models.Dtos;
 using StudentManagement.Models.Entities;
 using StudentManagement.Models.Requests;
@@ -14,23 +16,28 @@ namespace StudentManagement.Controllers.Students
     public class StudentsController : ControllerBase
     {
         private readonly StudentManagementContext dbContext;
+        private UserConverter userConverter;
+
 
         public StudentsController(StudentManagementContext dbContext)
         {
             this.dbContext = dbContext;
+            userConverter = new UserConverter();
         }
 
         [SwaggerOperation(Summary = "Get all students")]
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<UserDto>> GetStudents()
         {
             var userEntities = await dbContext.Users.ToListAsync();
-            var userDtos = convertEntitiesToDtos(userEntities);
+            var userDtos = userConverter.convertEntitiesToDtos(userEntities);
             return Ok(userDtos);
         }
 
         [SwaggerOperation(Summary = "Find a specific student by ID")]
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<UserDto>> FindStudentById(int id)
         {
             var foundStudent = await dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
@@ -38,11 +45,12 @@ namespace StudentManagement.Controllers.Students
             {
                 return NotFound("Student not found.");
             }
-            return Ok(ConvertEntityToDto(foundStudent));
+            return Ok(userConverter.ConvertEntityToDto(foundStudent));
         }
 
         [SwaggerOperation(Summary = "Update a student info")]
         [HttpPatch("{id}")]
+        [Authorize]
         public async Task<IActionResult> UpdateStudent(int id, [FromBody] JsonPatchDocument<User> updateRequest)
         {
             if(updateRequest == null)
@@ -66,13 +74,14 @@ namespace StudentManagement.Controllers.Students
             dbContext.Users.Update(studentToUpdate);
             await dbContext.SaveChangesAsync();
 
-            UserDto updatedStudentDto = ConvertEntityToDto(studentToUpdate);
+            UserDto updatedStudentDto = userConverter.ConvertEntityToDto(studentToUpdate);
 
             return Ok(updatedStudentDto);
         }
 
         [SwaggerOperation(Summary = "Update a student photo")]
         [HttpPut("{id}/photo")]
+        [Authorize]
         public async Task<IActionResult> UpdateStudentPhoto(int id, [FromForm] UpdateStudentPhotoRequest request)
         {
             if (request == null)
@@ -96,28 +105,9 @@ namespace StudentManagement.Controllers.Students
             dbContext.Users.Update(updatedStudent);
             await dbContext.SaveChangesAsync();
 
-            UserDto updatedStudentDto = ConvertEntityToDto(updatedStudent);
+            UserDto updatedStudentDto = userConverter.ConvertEntityToDto(updatedStudent);
 
             return Ok(updatedStudentDto);
-        }
-
-        private List<UserDto> convertEntitiesToDtos(List<User> userEntities)
-        {
-            List<UserDto> convertedResult = userEntities.Select(
-                    user => ConvertEntityToDto(user)
-                ).ToList();
-            return convertedResult;
-        }
-
-        private UserDto ConvertEntityToDto(User user)
-        {
-            var dto = new UserDto();
-            dto.Id = user.Id;
-            dto.Username = user.Username;
-            dto.Firstname = user.Firstname;
-            dto.Lastname = user.Lastname;
-            dto.Photo = user.Photo;
-            return dto;
         }
 
     }

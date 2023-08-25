@@ -2,11 +2,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using StudentManagement.Converter;
 using StudentManagement.Helpers;
+using StudentManagement.Models.Dtos;
 using StudentManagement.Models.Entities;
 using StudentManagement.Models.Requests;
 using Swashbuckle.AspNetCore.Annotations;
-using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -22,16 +23,18 @@ namespace StudentManagement.Controllers.Auth
     {
         private readonly IConfiguration configuration;
         private readonly StudentManagementContext dbContext;
+        private UserConverter userConverter;
 
         public AuthController(IConfiguration configuration, StudentManagementContext dbContext)
         {
             this.configuration = configuration;
             this.dbContext = dbContext;
+            userConverter = new UserConverter();
         }
 
         [SwaggerOperation(Summary = "Register a user")]
         [HttpPost("register")]
-        public async Task<ActionResult<User>> Register(RegisterDto request)
+        public async Task<ActionResult<UserDto>> Register(RegisterDto request)
         {
             // check username regex
             string pattern = @"\w{4}";
@@ -53,11 +56,20 @@ namespace StudentManagement.Controllers.Auth
             user.Password = hashedPassword; 
             user.PasswordSalt = salt;
 
+            // just hard code for now
+            if(request.Username == "tuan")
+            {
+                user.Roleid = 1;
+            } else
+            {
+                user.Roleid = 2;
+            }
+
             // save to db
             await dbContext.Users.AddAsync(user);
             await dbContext.SaveChangesAsync();
 
-            return Ok(user);
+            return Ok(userConverter.ConvertEntityToDto(user));
         }
 
         [SwaggerOperation(Summary = "Login")]
