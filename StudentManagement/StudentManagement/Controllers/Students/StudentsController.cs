@@ -28,9 +28,9 @@ namespace StudentManagement.Controllers.Students
         [SwaggerOperation(Summary = "Get all students")]
         [HttpGet]
 
-        public async Task<ActionResult<UserDto>> GetStudents()
+        public async Task<ActionResult<UserDto>> GetStudents(int take = 10, int skip = 0)
         {
-            var userEntities = await dbContext.Users.ToListAsync();
+            var userEntities = await dbContext.Users.Skip(skip).Take(take).ToListAsync();
             var userDtos = userConverter.convertEntitiesToDtos(userEntities);
             return Ok(userDtos);
         }

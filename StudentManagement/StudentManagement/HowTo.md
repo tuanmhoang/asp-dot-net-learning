@@ -121,6 +121,9 @@ builder.Services.AddDbContext<StudentManagementContext>(options =>  options.UseS
 
 ```
 
+Reference:
+
+https://www.youtube.com/watch?v=hpLvXNASyTI&t=218s
 
 ---
 ## 99. Notes

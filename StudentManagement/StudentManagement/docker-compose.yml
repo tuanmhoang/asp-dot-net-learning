@@ -1,19 +1,34 @@
 version: '3.4'  
+
+networks:
+    studentapp: 
  
 services:
     student-sql-db:
         image: "mcr.microsoft.com/mssql/server:2022-latest"
         container_name: student_sql_server2022
         ports: # not actually needed, because the two services are on the same network
-          - "1433:1433" 
+          - 1433:1433
         environment:
           - ACCEPT_EULA=y
-          - SA_PASSWORD=A!VeryComplex123Password
+          - SA_PASSWORD=Hello@135
           - MSSQL_DB=StudentDb   # Set the database name
-    student-student-api:
+          - MSSQL_USER=tuan
+          - MSSQL_PASSWORD=Hello@135
+        networks:
+          - studentapp
+    student-api:
         container_name: student_api_container
-        image: tuancuchuoi/student-student-api:0.0.1
+        image: tuancuchuoi/student-api:0.0.1
         ports:
-            - 8001:80 
+          - 8001:80
+        build:
+            context: .
         depends_on:
-            - student-sql-db
+          - student-sql-db
+        environment:
+          - DB_HOST=student-sql-db
+          - DB_NAME=StudentDb
+          - DB_SA_PASSWORD=Hello@135
+        networks:
+          - studentapp 

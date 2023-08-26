@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "BfaXQA1kKjfygKO5wtEVfU8vBQRFwuBGT9DHvq9WMk6VVmnqTTtIIF1EcspUP4yeTSQ7GAhyjDhiQB/2niKEGQ==",
+  "dgSpecHash": "BmEKnByg5ZeQHZ9gAiuH9JrqntL9x1q+hFSrCIiKwEIg25boloDXHlUuw17Of8kHYMzBCMzYbceURvNv3fDvLg==",
   "success": true,
   "projectFilePath": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\StudentManagement.csproj",
   "expectedPackageFiles": [
@@ -44,6 +44,7 @@
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.openapi\\1.2.3\\microsoft.openapi.1.2.3.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.sqlserver.server\\1.0.0\\microsoft.sqlserver.server.1.0.0.nupkg.sha512",
+    "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.visualstudio.azure.containers.tools.targets\\1.19.4\\microsoft.visualstudio.azure.containers.tools.targets.1.19.4.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.win32.registry\\5.0.0\\microsoft.win32.registry.5.0.0.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\mono.texttemplating\\2.2.1\\mono.texttemplating.2.2.1.nupkg.sha512",

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
-using StudentManagement.Configs;
 using StudentManagement.Models.Entities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,6 +56,8 @@ builder.Services.AddSwaggerGen(setup =>
     });
 
 });
+
+/* Create DB configs */
 builder.Services.AddDbContext<StudentManagementContext>();
 
 builder.Services.AddAuthentication("Bearer")
@@ -71,11 +72,11 @@ builder.Services.AddAuthorization();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 

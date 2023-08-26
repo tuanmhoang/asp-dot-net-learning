@@ -107,13 +107,15 @@ namespace StudentManagement.Controllers.Setup
         private User createSingleStudent(string Username, string Firstname, string Lastname)
         {
             var (salt, hashedPassword) = passwordHelper.GenerateSaltAndHash("defaultPass");
+            byte[] data = System.IO.File.ReadAllBytes(@"Resources\avatar.png");
             User user = new User()
             {                
                 Username = Username,
                 Firstname = Firstname,
                 Lastname = Lastname,
                 Password = hashedPassword,
-                PasswordSalt = salt                
+                PasswordSalt = salt,
+                Photo = data
             };
             return user;
         }
