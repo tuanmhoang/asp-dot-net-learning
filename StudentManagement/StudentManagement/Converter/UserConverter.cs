@@ -20,7 +20,10 @@ namespace StudentManagement.Converter
             dto.Username = user.Username;
             dto.Firstname = user.Firstname;
             dto.Lastname = user.Lastname;
-            dto.Photo = user.Photo;
+            if (user.Photo != null)
+            {
+                dto.Photo = Convert.ToBase64String(user.Photo);
+            }
             return dto;
         }
 

@@ -1,12 +1,6 @@
-﻿using Azure.Core;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using StudentManagement.Converter;
+﻿using Microsoft.AspNetCore.Mvc;
 using StudentManagement.Helpers;
-using StudentManagement.Models.Dtos;
 using StudentManagement.Models.Entities;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace StudentManagement.Controllers.Setup
 {
@@ -24,39 +18,61 @@ namespace StudentManagement.Controllers.Setup
             passwordHelper = new PasswordHelper();
         }
 
-        [SwaggerOperation(Summary = "Init db")]
-        [HttpGet("init")]
-
+        /// <summary>
+        /// Init fresh DB
+        /// </summary>
+        /// <remarks>This API drops all data in DB and recreates fresh DB. 
+        /// 
+        /// ***** Use this when you want a new DB with no data. *****</remarks>
+        /// <response code="200">Everything is OK</response>
+        /// <response code="500">Oops! Something is wrong right now</response>
+        [HttpGet("fresh")]
         public async Task<ActionResult<string>> CreateDatabase()
         {
-            string databasename = dbContext.Database.GetDbConnection().Database;// mydata
-            bool result = await dbContext.Database.EnsureCreatedAsync();
-            string resultstring = result ? "- Created db" : "- DB exists. Skip creating";
-            string createdResult = databasename + resultstring;
-    
-            return Ok(createdResult);
+            /*            bool deleted = false;
+                        bool canConnect = await dbContext.Database.CanConnectAsync();
+                        if (canConnect)
+                        {
+                            deleted= await dbContext.Database.EnsureDeletedAsync();
+                        }
+
+                        bool created = await dbContext.Database.EnsureCreatedAsync();*/
+
+
+            bool created = await dbContext.Database.EnsureCreatedAsync();
+            bool deleted = false;
+            if (!created)
+            {
+                deleted = await dbContext.Database.EnsureDeletedAsync();
+                await dbContext.Database.EnsureCreatedAsync();
+            }
+
+            string result = $"Is DB deleted: {deleted} - Is DB created: {created}";
+            return Ok(result);
         }
 
-        [SwaggerOperation(Summary = "Delete db")]
-        [HttpGet("delete")]
-        public async Task<ActionResult<string>> DeleteDatabase()
-        {
-            bool deleted = await dbContext.Database.EnsureDeletedAsync();
-            string deletionInfo = deleted ? "Deleted" : "Cannot delete";
-
-            return Ok(deletionInfo);
-        }
-
-        [SwaggerOperation(Summary = "Init mock data")]
+        /// <summary>
+        /// Init mock data
+        /// </summary>
+        /// <remarks>This API helps to delete all Data in DB and provide some initial mock data. 
+        /// 
+        /// ***** Use this when you want a new DB with some mock data. *****</remarks>
+        /// <response code="200">Everything is OK</response>
+        /// <response code="500">Oops! Something is wrong right now</response>
         [HttpGet("mock")]
         public async Task<ActionResult<string>> CreateMockData()
         {
-
-            await CreateMockRoles();
-            await CreateMockStudents();
+            await CreateDatabase();
+            await CreateMockDataForTesting();
 
             await dbContext.SaveChangesAsync();
             return Ok("Done creating mock data");
+        }
+
+        private async Task CreateMockDataForTesting()
+        {
+            await CreateMockRoles();
+            await CreateMockStudents();
         }
 
         private async Task CreateMockStudents()
@@ -90,7 +106,6 @@ namespace StudentManagement.Controllers.Setup
 
         }
 
-
         private async Task CreateMockRoles()
         {
             List<Role> roles = new List<Role>
@@ -107,7 +122,9 @@ namespace StudentManagement.Controllers.Setup
         private User createSingleStudent(string Username, string Firstname, string Lastname)
         {
             var (salt, hashedPassword) = passwordHelper.GenerateSaltAndHash("defaultPass");
-            byte[] data = System.IO.File.ReadAllBytes(@"Resources\avatar.png");
+            //string txtPath = Path.Combine(Environment.CurrentDirectory, "Resources/avatar.png");
+            //byte[] data = System.IO.File.ReadAllBytes(@"Resources/avatar.png");
+            //byte[] data = System.IO.File.ReadAllBytes(txtPath);
             User user = new User()
             {                
                 Username = Username,
@@ -115,7 +132,7 @@ namespace StudentManagement.Controllers.Setup
                 Lastname = Lastname,
                 Password = hashedPassword,
                 PasswordSalt = salt,
-                Photo = data
+                //Photo = data
             };
             return user;
         }

@@ -93,3 +93,5 @@ C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentM
 C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\bin\Release\net6.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\bin\Release\net6.0\Npgsql.dll
 C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\bin\Release\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
+C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\bin\Release\net6.0\StudentManagement.xml
+C:\working\2.Projects\7.siteCoreK11\0_study\github\asp-dot-net-learning\StudentManagement\StudentManagement\obj\Release\net6.0\StudentManagement.xml

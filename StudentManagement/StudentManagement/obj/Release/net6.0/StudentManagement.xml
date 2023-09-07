@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>StudentManagement</name>
+    </assembly>
+    <members>
+        <member name="M:StudentManagement.Controllers.Setup.DbController.CreateDatabase">
+            <summary>
+            Init fresh DB
+            </summary>
+            <remarks>This API drops all data in DB and recreates fresh DB. 
+            
+            ***** Use this when you want a new DB with no data. *****</remarks>
+            <response code="200">Everything is OK</response>
+            <response code="500">Oops! Something is wrong right now</response>
+        </member>
+        <member name="M:StudentManagement.Controllers.Setup.DbController.CreateMockData">
+            <summary>
+            Init mock data
+            </summary>
+            <remarks>This API helps to delete all Data in DB and provide some initial mock data. 
+            
+            ***** Use this when you want a new DB with some mock data. *****</remarks>
+            <response code="200">Everything is OK</response>
+            <response code="500">Oops! Something is wrong right now</response>
+        </member>
+        <member name="M:StudentManagement.Controllers.Students.StudentsController.FindStudentById(System.Int32)">
+            <summary>
+            Find student by ID
+            </summary>
+            <remarks>This API helps to find a specific student by ID.</remarks>
+            <response code="200">Everything is OK</response>
+            <response code="500">Oops! Something is wrong right now</response>
+        </member>
+        <member name="M:StudentManagement.Controllers.Students.StudentsController.UpdateStudent(System.Int32,Microsoft.AspNetCore.JsonPatch.JsonPatchDocument{StudentManagement.Models.Entities.User})">
+            <summary>
+            Update student by ID
+            </summary>
+            <remarks>This API helps to update a student info by ID.</remarks>
+            <response code="200">Everything is OK</response>
+            <response code="500">Oops! Something is wrong right now</response>
+        </member>
+        <member name="M:StudentManagement.Controllers.Students.StudentsController.UpdateStudentPhoto(System.Int32,StudentManagement.Models.Requests.UpdateStudentPhotoRequest)">
+            <summary>
+            Update a student photo
+            </summary>
+            <remarks>This API helps to update a student photo.</remarks>
+            <response code="200">Everything is OK</response>
+            <response code="500">Oops! Something is wrong right now</response>
+        </member>
+    </members>
+</doc>

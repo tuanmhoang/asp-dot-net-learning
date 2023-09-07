@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using StudentManagement.Models.Entities;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,8 +14,9 @@ builder.Services.AddCors(options =>
     options.AddPolicy(name: MyAllowSpecificOrigins,
                       policy =>
                       {
-                          policy.WithOrigins("https://localhost:7096",
-                                              "https://localhost:7096/swagger/index.html");
+                          policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+                          .AllowAnyHeader()
+                          .AllowAnyMethod();
                       });
 });
 
@@ -54,6 +55,13 @@ builder.Services.AddSwaggerGen(setup =>
     {
         { jwtSecurityScheme, Array.Empty<string>() }
     });
+
+    setup.EnableAnnotations();
+    setup.SwaggerDoc("v1", new OpenApiInfo { Title = "Student management API", Version = "v1" });
+    // Set the comments path for the Swagger JSON and UI.**
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    setup.IncludeXmlComments(xmlPath);
 
 });
 
