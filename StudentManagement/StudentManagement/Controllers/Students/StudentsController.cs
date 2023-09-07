@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentManagement.Converter;
@@ -26,7 +27,7 @@ namespace StudentManagement.Controllers.Students
 
         [SwaggerOperation(Summary = "Get all students")]
         [HttpGet]
-
+        [Authorize(AuthenticationSchemes = "Bearer")]
         public async Task<ActionResult<UserDto>> GetStudents(int page, int limit)
         {
             if (page == 0)

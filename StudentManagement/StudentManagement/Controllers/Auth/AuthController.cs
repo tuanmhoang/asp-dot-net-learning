@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -34,6 +35,7 @@ namespace StudentManagement.Controllers.Auth
 
         [SwaggerOperation(Summary = "Register a user")]
         [HttpPost("register")]
+        [AllowAnonymous]
         public async Task<ActionResult<UserDto>> Register(RegisterDto request)
         {
             // check username regex
@@ -74,6 +76,7 @@ namespace StudentManagement.Controllers.Auth
 
         [SwaggerOperation(Summary = "Login")]
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<ActionResult<string>> Login(LoginDto request)
         {
             var foundUser = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == request.Username);
@@ -105,16 +108,22 @@ namespace StudentManagement.Controllers.Auth
         {
             List<Claim> claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Username),
+                
+                // add more things here
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-                configuration.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtSettings:Key"]));
 
-            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            //var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(
-                claims: claims,
+                configuration["JwtSettings:Issuer"],
+                configuration["JwtSettings:Audience"],
+                //claims: claims,
+                null,
                 expires: DateTime.Now.AddDays(1),
                 signingCredentials: cred);
 

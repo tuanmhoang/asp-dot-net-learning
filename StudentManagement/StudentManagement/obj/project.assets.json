@@ -4348,11 +4348,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\StudentManagement.csproj",
+      "projectUniqueName": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\new\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\StudentManagement.csproj",
       "projectName": "StudentManagement",
-      "projectPath": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\StudentManagement.csproj",
+      "projectPath": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\new\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\StudentManagement.csproj",
       "packagesPath": "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\",
-      "outputPath": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\obj\\",
+      "outputPath": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\new\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

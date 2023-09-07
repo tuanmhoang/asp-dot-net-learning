@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StudentManagement.Models.Entities;
 using System.Reflection;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,10 +22,28 @@ builder.Services.AddCors(options =>
                       });
 });
 
-/*builder.Services.AddControllers(options =>
+var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+
+builder.Services.AddAuthentication(options =>
 {
-    options.InputFormatters.Insert(0, MyJPIF.GetJsonPatchInputFormatter());
-});*/
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidIssuer = config["JwtSettings:Issuer"],
+        ValidAudience = config["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JwtSettings:Key"]!)),
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true, 
+        ValidateIssuerSigningKey = true
+    };
+});
+
+builder.Services.AddAuthorization();
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson();
@@ -68,15 +88,6 @@ builder.Services.AddSwaggerGen(setup =>
 /* Create DB configs */
 builder.Services.AddDbContext<StudentManagementContext>();
 
-builder.Services.AddAuthentication("Bearer")
-        .AddJwtBearer("Bearer", options =>
-        {
-            options.Authority = "https://localhost:7096"; // Replace with your actual auth server URL
-            options.Audience = "https://localhost:7096"; // Replace with your API's audience
-        });
-
-builder.Services.AddAuthorization();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -90,6 +101,7 @@ app.UseHttpsRedirection();
 
 app.UseCors(MyAllowSpecificOrigins);
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

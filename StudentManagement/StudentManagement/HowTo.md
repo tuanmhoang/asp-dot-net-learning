@@ -125,6 +125,10 @@ builder.Services.AddDbContext<StudentManagementContext>(options =>  options.UseS
 
 To have some hardcoded data
 
+# 5. Authen and author
+
+https://www.youtube.com/watch?v=mgeuh8k3I4g
+
 ---
 ## 99. Notes
 

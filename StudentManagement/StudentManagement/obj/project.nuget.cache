@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "BmEKnByg5ZeQHZ9gAiuH9JrqntL9x1q+hFSrCIiKwEIg25boloDXHlUuw17Of8kHYMzBCMzYbceURvNv3fDvLg==",
+  "dgSpecHash": "9BHA+lFwaT0QkVO18Mlp6KNzkQ5VbQz50UiLmpvFEIwCk+CZ+xMMf9Yt3Ma0fiEa8Q1SbCtA/WfSkeD1wsw4hQ==",
   "success": true,
-  "projectFilePath": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\StudentManagement.csproj",
+  "projectFilePath": "C:\\working\\2.Projects\\7.siteCoreK11\\0_study\\github\\new\\asp-dot-net-learning\\StudentManagement\\StudentManagement\\StudentManagement.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\azure.core\\1.24.0\\azure.core.1.24.0.nupkg.sha512",
     "C:\\Users\\Tuan_Hoang\\.nuget\\packages\\azure.identity\\1.6.0\\azure.identity.1.6.0.nupkg.sha512",

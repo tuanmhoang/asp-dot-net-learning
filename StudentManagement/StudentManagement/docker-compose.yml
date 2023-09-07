@@ -15,20 +15,20 @@ services:
           - MSSQL_DB=StudentDb   # Set the database name
 
         networks:
-          - studentapp
-    student-api:
-        container_name: student_api_container
-        image: tuancuchuoi/student-api:0.0.8
-        platform: linux/amd64
-        ports:
-          - 8001:80
-        build:
-            context: .
-        depends_on:
-          - student-sql-db
-        environment:
-          - DB_HOST=student-sql-db
-          - DB_NAME=StudentDb
-          - DB_SA_PASSWORD=Hello@135
-        networks:
           - studentapp 
+#   student-api:
+#       container_name: student_api_container
+#       image: tuancuchuoi/student-api:0.0.8
+#       platform: linux/amd64
+#       ports:
+#         - 8001:80
+#       build:
+#           context: .
+#       depends_on:
+#         - student-sql-db
+#       environment:
+#         - DB_HOST=student-sql-db
+#         - DB_NAME=StudentDb
+#         - DB_SA_PASSWORD=Hello@135
+#       networks:
+#         - studentapp 
