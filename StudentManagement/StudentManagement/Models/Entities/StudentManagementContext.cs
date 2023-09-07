@@ -1,78 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace StudentManagement.Models.Entities;
 
 public partial class StudentManagementContext : DbContext
 {
-    public StudentManagementContext()
+    public StudentManagementContext() 
     {
+        
     }
 
-    public StudentManagementContext(DbContextOptions<StudentManagementContext> options)
-        : base(options)
-    {
-    }
 
     public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=StudentManagement;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+    {
+        var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+        var dbName = Environment.GetEnvironmentVariable("DB_NAME");
+        var dbPassword = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+        var connectionString = string.Empty;
+        if(dbHost == null && dbName == null && dbPassword == null) {
+            connectionString = "Server=localhost;Database=StudentDb;User Id=sa;Password=Hello@135;MultipleActiveResultSets=true;Trusted_Connection=False;TrustServerCertificate=True";
+        } else
+        {
+            connectionString = $"Server={dbHost};Database={dbName};User ID=sa;Password={dbPassword};MultipleActiveResultSets=true;Trusted_Connection=False;TrustServerCertificate=True";
+        }
+        //string connectionString = "Server=localhost;Database=StudentDb;User Id=sa;Password=Hello@135;MultipleActiveResultSets=true;Trusted_Connection=False;TrustServerCertificate=True";
+        optionsBuilder.UseSqlServer(connectionString);
+        //base.OnConfiguring(optionsBuilder);
+    }
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Role>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__ROLE__3213E83F57A5A207");
-
-            entity.ToTable("ROLE");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Role1)
-                .HasMaxLength(100)
-                .IsUnicode(false)
-                .HasColumnName("role");
-        });
-
-        modelBuilder.Entity<User>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("PK__USER__3213E83FF9720F2B");
-
-            entity.ToTable("USER");
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Firstname)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("firstname");
-            entity.Property(e => e.Lastname)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("lastname");
-            entity.Property(e => e.Password)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("password");
-            entity.Property(e => e.PasswordSalt)
-                .HasMaxLength(255)
-                .IsUnicode(false)
-                .HasColumnName("password_salt");
-            entity.Property(e => e.Photo).HasColumnName("photo");
-            entity.Property(e => e.Roleid).HasColumnName("roleid");
-            entity.Property(e => e.Username)
-                .HasMaxLength(50)
-                .IsUnicode(false)
-                .HasColumnName("username");
-
-            entity.HasOne(d => d.Role).WithMany(p => p.Users)
-                .HasForeignKey(d => d.Roleid)
-                .HasConstraintName("FK__USER__roleid__5812160E");
-        });
-
         OnModelCreatingPartial(modelBuilder);
     }
 

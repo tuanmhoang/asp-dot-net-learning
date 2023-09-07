@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentManagement.Converter;
@@ -28,14 +27,32 @@ namespace StudentManagement.Controllers.Students
         [SwaggerOperation(Summary = "Get all students")]
         [HttpGet]
 
-        public async Task<ActionResult<UserDto>> GetStudents()
+        public async Task<ActionResult<UserDto>> GetStudents(int page, int limit)
         {
-            var userEntities = await dbContext.Users.ToListAsync();
+            if (page == 0)
+            {
+                page = 1;
+            }
+                
+            if (limit == 0)
+            {
+                limit = int.MaxValue;
+            }
+               
+
+            var skip = (page - 1) * limit;
+
+            var userEntities = await dbContext.Users.Skip(skip).Take(limit).ToListAsync();
             var userDtos = userConverter.convertEntitiesToDtos(userEntities);
             return Ok(userDtos);
         }
 
-        [SwaggerOperation(Summary = "Find a specific student by ID")]
+        /// <summary>
+        /// Find student by ID
+        /// </summary>
+        /// <remarks>This API helps to find a specific student by ID.</remarks>
+        /// <response code="200">Everything is OK</response>
+        /// <response code="500">Oops! Something is wrong right now</response>
         [HttpGet("{id}")]
  
         public async Task<ActionResult<UserDto>> FindStudentById(int id)
@@ -48,7 +65,12 @@ namespace StudentManagement.Controllers.Students
             return Ok(userConverter.ConvertEntityToDto(foundStudent));
         }
 
-        [SwaggerOperation(Summary = "Update a student info")]
+        /// <summary>
+        /// Update student by ID
+        /// </summary>
+        /// <remarks>This API helps to update a student info by ID.</remarks>
+        /// <response code="200">Everything is OK</response>
+        /// <response code="500">Oops! Something is wrong right now</response>
         [HttpPatch("{id}")]
     
         public async Task<IActionResult> UpdateStudent(int id, [FromBody] JsonPatchDocument<User> updateRequest)
@@ -79,7 +101,12 @@ namespace StudentManagement.Controllers.Students
             return Ok(updatedStudentDto);
         }
 
-        [SwaggerOperation(Summary = "Update a student photo")]
+        /// <summary>
+        /// Update a student photo
+        /// </summary>
+        /// <remarks>This API helps to update a student photo.</remarks>
+        /// <response code="200">Everything is OK</response>
+        /// <response code="500">Oops! Something is wrong right now</response>
         [HttpPut("{id}/photo")]
 
         public async Task<IActionResult> UpdateStudentPhoto(int id, [FromForm] UpdateStudentPhotoRequest request)

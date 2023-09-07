@@ -86,7 +86,7 @@ namespace StudentManagement.Controllers.Auth
             var slt = foundUser.PasswordSalt;
 
             //
-            PasswordHelper passwordHelper = new PasswordHelper();
+            PasswordHelper passwordHelper = new();
             bool isPasswordValid = passwordHelper.ValidatePassword(request.Password,
                 foundUser.Password,
                 foundUser.PasswordSalt);

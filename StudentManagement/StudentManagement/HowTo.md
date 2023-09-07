@@ -100,6 +100,32 @@ https://stackoverflow.com/questions/52883466/how-to-add-method-description-in-sw
 > Launch project, go to localhost:[port number]/swagger and enjoy.
 
 ---
+# 4. Containerize using Docker
+
+Reference:
+
+- https://www.twilio.com/blog/containerize-your-aspdotnet-core-application-and-sql-server-with-docker
+- https://www.ezzylearning.net/tutorial/dockerize-asp-net-core-api-and-sql-server
+- https://www.youtube.com/watch?v=hpLvXNASyTI&t=873s
+
+Define in `appsettings.json`
+
+```
+  "ConnectionStrings": {
+    "StudentsDb": "Server=sql_server2022;Database=StudentsDb;User Id=SA;Password=A&VeryComplex123Password;MultipleActiveResultSets=true"
+  },
+```
+
+Define in `Program.cs`
+
+```
+builder.Services.AddDbContext<StudentManagementContext>(options =>  options.UseSqlServer(builder.Configuration.GetConnectionString("StudentsDb")));
+
+```
+
+To have some hardcoded data
+
+---
 ## 99. Notes
 
 https://stackoverflow.com/questions/5613898/storing-images-in-sql-server
@@ -141,3 +167,24 @@ builder.Services.AddCors(options =>
 
 app.UseCors(MyAllowSpecificOrigins);
 ```
+
+---
+
+Windows & Mac
+
+- Enable support Rosetta on Mac Docker
+- Add support build for the platform
+
+---
+
+Swagger desc
+
+https://stackoverflow.com/questions/52883466/how-to-add-method-description-in-swagger-ui-in-webapi-application
+
+https://learn.microsoft.com/en-us/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-7.0&tabs=visual-studio
+
+---
+
+cors for localhost
+
+https://stackoverflow.com/questions/57530680/enable-cors-for-any-port-on-localhost
